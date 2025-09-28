@@ -42,8 +42,12 @@ https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js</script>
     const db = firebase.database();
 
     // 🔄 Chargement de l'état de réservation
+    let chargementTerminé = false;
+    
     db.ref("reservation").on("value", snapshot => {
       const data = snapshot.val();
+      chargementTerminé = true;
+      
       if (data && data.nom) {
         document.getElementById("status").innerText = "Déjà réservé par " + data.nom;
         document.getElementById("nameInput").style.display = "none";
@@ -54,6 +58,13 @@ https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js</script>
         document.getElementById("reserveButton").style.display = "inline";
       }
     });
+    
+// Sécurité : si Firebase ne répond pas dans 5 secondes
+setTimeout(() => {
+  if (!chargementTerminé) {
+    document.getElementById("status").innerText = "Erreur de chargement";
+  }
+}, 5000);
 
     function reserver() {
       const name = document.getElementById("nameInput").value.trim();
@@ -90,7 +101,7 @@ https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js</script>
 <body>
   <h2>Réservation</h2>
   <div class="reservation-box">
-    <p id="status">Chargement.... </p>
+    <p id="status">Chargement... </p>
     <input type="text" id="nameInput" placeholder="Votre nom">
     <button id="reserveButton" onclick="reserver()">Je réserve</button>
     <div class="image-container">
