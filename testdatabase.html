@@ -3,7 +3,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Test Firebase</title>
+  <title>Test Firebase Database</title>
 </head>
 <body>
   <h1>Test Firebase Database</h1>
@@ -12,49 +12,52 @@
   <p id="output"></p>
 
   <!-- Firebase SDK -->
-  
-<script scr="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script scr="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat  https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js</script>
 
+  <!-- Initialisation et fonctions -->
   <script>
+    // Attendre que la page soit complètement chargée
     window.addEventListener("load", () => {
+      // Configuration Firebase
+      const firebaseConfig = {
+        apiKey: "AIzasyAdLzToNbtdXQtANLm1yj8fvksdw9TUGfI",
+        authDomain: "noel2025chloe.firebaseapp.com",
+        projectId: "noel2025chloe",
+        storageBucket: "noel2025chloe.appspot.com",
+        messagingSenderId: "1051859193015",
+        appId: "1:1051859193015:web:f042f1ccf1ef9d4c6c9132",
+        measurementId: "G-8V58F7EQGN",
+        databaseURL: "https://noel2025chloe-default-rtdb.europe-west1.firebasedatabase.app"
+      };
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAdLzI0bNtDKQtANLm1Yj8fvksdw9TUGfI",
-    authDomain: "noel2025chloe.firebaseapp.com",
-    projectId: "noel2025chloe",
-    storageBucket: "noel2025chloe.firebasestorage.app",
-    messagingSenderId: "1051859193015",
-    appId: "1:1051859193015:web:f042f1ccf1ef9d4c6c9132",
-    measurementId: "G-8V587EQ2GN",
-    databaseURL: "https://noel2025chloe-default-rtdb.europe-west1.firebasedatabase.app"
-  };
+      // Initialisation Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-  
-    window.writeTestData = function () {
-      db.ref("test").set({
-        message: "Bonjour depuis Firebase !"
-      }).then(() => {
-        document.getElementById("output").innerText = "Donnée écrite avec succès.";
-      }).catch((error) => {
-        document.getElementById("output").innerText = "Erreur : " + error;
-      });
-    };
-      
-    window.readTestData = function () {
-      db.ref("test").get().then((snapshot) => {
-        if (snapshot.exists()) {
-          document.getElementById("output").innerText = snapshot.val().message;
-        } else {
-          document.getElementById("output").innerText = "Aucune donnée trouvée.";
-        }
-      }).catch((error) => {
-        document.getElementById("output").innerText = "Erreur : " + error;
-      });
-    };
-  });
-</script>
+      // Fonction d'écriture
+      window.writeTestData = function () {
+        db.ref("test").set({
+          message: "Bonjour depuis Firebase !"
+        }).then(() => {
+          document.getElementById("output").innerText = "Donnée écrite avec succès.";
+        }).catch((error) => {
+          document.getElementById("output").innerText = "Erreur : " + error;
+        });
+      };
+
+      // Fonction de lecture
+      window.readTestData = function () {
+        db.ref("test").get().then((snapshot) => {
+          if (snapshot.exists()) {
+            document.getElementById("output").innerText = snapshot.val().message;
+          } else {
+            document.getElementById("output").innerText = "Aucune donnée trouvée.";
+          }
+        }).catch((error) => {
+          document.getElementById("output").innerText = "Erreur : " + error;
+        });
+      };
+    });
+  </script>
 </body>
 </html>
