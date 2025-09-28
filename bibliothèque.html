@@ -16,18 +16,14 @@
   <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   
-
-  <!-- Firebase -->
-  // appreservationnoelchloe2025 
-  //https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js
-  //<script src="https://www.gstatic.com/firebasejs/9.22.2/firebasepat.js"></script>
-
   <script>
     // Initialisation EmailJS
     document.addEventListener("DOMContentLoaded", function() {
       emailjs.init("pNVio12zWh2fUKRe6");
     });
+   </script>
 
+   <script>
     // 🔐 Configuration Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAdLzI0bNtDKQtANLm1Yj8fvksdw9TUGfI",
@@ -40,10 +36,15 @@
       measurementId: "G-8V587EQ2GN",
     };
 
-
     // 🚀 Initialisation Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+
+    
+    // Test d’écriture dans la base
+    db.ref("test").set({ message: "Hello Jérémy" });
+    </script>
+
 
     // 🔄 Chargement de l'état de réservation
     let chargementTerminé = false;
@@ -105,7 +106,7 @@ setTimeout(() => {
 <body>
   <h2>Réservation</h2>
   <div class="reservation-box">
-    <p id="status">Chargement..... </p>
+    <p id="status">Chargement.... </p>
     <input type="text" id="nameInput" placeholder="Votre nom">
     <button id="reserveButton" onclick="reserver()">Je réserve</button>
     <div class="image-container">
