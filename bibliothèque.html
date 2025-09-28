@@ -11,7 +11,6 @@
     .image-container img { max-width: 100%; height: auto; margin-top: 10px; }
     .admin-section { margin-top: 30px; }
   </style>
-
   
   <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -27,7 +26,6 @@
     });
    </script>
 
-  <!-- Initialisation et fonctions -->
   <script>
     // Attendre que la page soit complètement chargée
     window.addEventListener("load", () => {
@@ -46,7 +44,7 @@
       // Initialisation Firebase
       firebase.initializeApp(firebaseConfig);
       const db = firebase.database();      
-     });
+     
     // 🔄 Chargement de l'état de réservation
     let chargementTerminé = false;
    
@@ -64,7 +62,7 @@
         document.getElementById("reserveButton").style.display = "inline";
       }
     });
-    
+    });
 // Sécurité : si Firebase ne répond pas dans 5 secondes
 setTimeout(() => {
   if (!chargementTerminé) {
