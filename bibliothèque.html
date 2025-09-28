@@ -70,27 +70,26 @@ setTimeout(() => {
   }
 }, 5000);   
 
-    function reserver() {
-      const name = document.getElementById("nameInput").value.trim();
-      if (!name) {
+    
+window.reserver = function () {
+    const name = document.getElementById("nameInput").value.trim();
+    if (!name) {
         alert("Veuillez entrer votre nom.");
         return;
-      }
+    }
 
-      // Enregistrement dans Firebase
-      db.ref("reservation").set({ nom: name });
-      
+    db.ref("reservation").set({ nom: name });
 
-      // Envoi de l'email via EmailJS
-      emailjs.send("service_h4uudzr", "template_ob420kk", {
+    emailjs.send("service_h4udzr", "template_ob420kK", {
         to_name: "Jérémy",
         from_name: name,
         slot: "la bibliothèque"
-      });
-  
-      alert("Réservation confirmée !");
-    }
+    })
+    .then(() => {
+        alert("Réservation confirmée !");
     });
+};
+
     function resetReservation() {
       const pass = prompt("Mot de passe admin :");
       if (pass !== "noelchloe2025") {
