@@ -79,6 +79,7 @@ setTimeout(() => {
 
       // Enregistrement dans Firebase
       db.ref("reservation").set({ nom: name });
+      alert("Réservation enregistrée !");
 
       // Envoi de l'email via EmailJS
       emailjs.send("service_h4uudzr", "template_ob420kk", {
