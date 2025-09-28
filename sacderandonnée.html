@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,37 +11,85 @@
     .image-container img { max-width: 100%; height: auto; margin-top: 10px; }
     .admin-section { margin-top: 30px; }
   </style>
+  
+  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>  
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  
   <script>
+    // Initialisation EmailJS
     document.addEventListener("DOMContentLoaded", function() {
-      emailjs.init("pNVio12zWh2fUKRe6"); // Remplacez par votre User ID EmailJS
+      emailjs.init("pNVio12zWh2fUKRe6");
     });
+   </script>
 
-    let isReserved = false;
+  <script>
+    // Attendre que la page soit complètement chargée
+    window.addEventListener("load", () => {
+      // Configuration Firebase
+      const firebaseConfig = {
+        apiKey: "AIzasyAdLzToNbtdXQtANLm1yj8fvksdw9TUGfI",
+        authDomain: "noel2025chloe.firebaseapp.com",
+        projectId: "noel2025chloe",
+        storageBucket: "noel2025chloe.appspot.com",
+        messagingSenderId: "1051859193015",
+        appId: "1:1051859193015:web:f042f1ccf1ef9d4c6c9132",
+        measurementId: "G-8V58F7EQGN",
+        databaseURL: "https://noel2025chloe-default-rtdb.europe-west1.firebasedatabase.app"
+      };
 
-    function reserver() {
-      if (isReserved) return;
+      // Initialisation Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();      
+     
+    // 🔄 Chargement de l'état de réservation
+    let chargementTerminé = false;
+   
+    db.ref("reservation_sac").on("value", snapshot => {
+      const data = snapshot.val();
+      chargementTerminé = true;
+   
+      if (data && data.nom) {
+        document.getElementById("status").innerText = "Déjà réservé par " + data.nom;
+        document.getElementById("nameInput").style.display = "none";
+        document.getElementById("reserveButton").style.display = "none";
+      } else {
+        document.getElementById("status").innerText = "Disponible";
+        document.getElementById("nameInput").style.display = "inline";
+        document.getElementById("reserveButton").style.display = "inline";
+      }
+    });
+    
+// Sécurité : si Firebase ne répond pas dans 5 secondes
+setTimeout(() => {
+  if (!chargementTerminé) {
+    document.getElementById("status").innerText = "Erreur de chargement";
+  }
+}, 5000);   
 
-      const name = document.getElementById("nameInput").value.trim();
-      if (!name) {
+    
+window.reserver = function () {
+    const name = document.getElementById("nameInput").value.trim();
+    if (!name) {
         alert("Veuillez entrer votre nom.");
         return;
-      }
+    }
 
-      // Envoi de l'email via EmailJS
-      emailjs.send("service_h4uudzr", "template_ob420kk", {
+    db.ref("reservation_sac").set({ nom: name });
+
+    emailjs.send("service_h4udzr", "template_ob420kK", {
         to_name: "Jérémy",
         from_name: name,
         slot: "le sac de randonnée"
-      });
-
-      // Mise à jour de l'interface
-      document.getElementById("status").innerText = "Déjà réservé par " + name;
-      document.getElementById("nameInput").style.display = "none";
-      document.getElementById("reserveButton").style.display = "none";
-      isReserved = true;
-    }
-
+    })
+    .then(() => {
+        alert("Réservation confirmée !");
+    });
+};
+    
     function resetReservation() {
       const pass = prompt("Mot de passe admin :");
       if (pass !== "noelchloe2025") {
@@ -48,18 +97,16 @@
         return;
       }
 
-      document.getElementById("status").innerText = "Disponible";
-      document.getElementById("nameInput").style.display = "inline";
-      document.getElementById("nameInput").value = "";
-      document.getElementById("reserveButton").style.display = "inline";
-      isReserved = false;
+      db.ref("reservation_sac").set({});
+      alert("Réservation réinitialisée !");
     }
+    });
   </script>
 </head>
 <body>
   <h2>Réservation</h2>
   <div class="reservation-box">
-    <p id="status">Disponible</p>
+    <p id="status">Chargement.... </p>
     <input type="text" id="nameInput" placeholder="Votre nom">
     <button id="reserveButton" onclick="reserver()">Je réserve</button>
     <div class="image-container">
@@ -72,5 +119,3 @@
   </div>
 </body>
 </html>
-
-
