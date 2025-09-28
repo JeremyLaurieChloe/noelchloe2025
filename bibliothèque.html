@@ -48,7 +48,7 @@
     // 🔄 Chargement de l'état de réservation
     let chargementTerminé = false;
    
-    db.ref("reservation").on("value", snapshot => {
+    db.ref("reservation_bibliothèque").on("value", snapshot => {
       const data = snapshot.val();
       chargementTerminé = true;
    
@@ -78,7 +78,7 @@ window.reserver = function () {
         return;
     }
 
-    db.ref("reservation").set({ nom: name });
+    db.ref("reservation_bibliothèque").set({ nom: name });
 
     emailjs.send("service_h4udzr", "template_ob420kK", {
         to_name: "Jérémy",
