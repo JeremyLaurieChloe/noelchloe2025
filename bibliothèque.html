@@ -15,6 +15,10 @@
   
   <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>  
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   
   <script>
     // Initialisation EmailJS
@@ -23,33 +27,31 @@
     });
    </script>
 
-   <script>
-    // 🔐 Configuration Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyAdLzI0bNtDKQtANLm1Yj8fvksdw9TUGfI",
-      authDomain: "noel2025chloe.firebaseapp.com",
-      databaseURL: "https://noel2025chloe-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "noel2025chloe",
-      storageBucket: "noel2025chloe.firebasestorage.app",
-      messagingSenderId: "1051859193015",
-      appId: "1:1051859193015:web:f042f1ccf1ef9d4c6c9132",
-      measurementId: "G-8V587EQ2GN",
-    };
+  <!-- Initialisation et fonctions -->
+  <script>
+    // Attendre que la page soit complètement chargée
+    window.addEventListener("load", () => {
+      // Configuration Firebase
+      const firebaseConfig = {
+        apiKey: "AIzasyAdLzToNbtdXQtANLm1yj8fvksdw9TUGfI",
+        authDomain: "noel2025chloe.firebaseapp.com",
+        projectId: "noel2025chloe",
+        storageBucket: "noel2025chloe.appspot.com",
+        messagingSenderId: "1051859193015",
+        appId: "1:1051859193015:web:f042f1ccf1ef9d4c6c9132",
+        measurementId: "G-8V58F7EQGN",
+        databaseURL: "https://noel2025chloe-default-rtdb.europe-west1.firebasedatabase.app"
+      };
 
-    // 🚀 Initialisation Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    
-    // Test d’écriture dans la base
-    db.ref("test").set({ message: "Hello Jérémy" });
-    </script>
-
+      // Initialisation Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();
+      };
 
     // 🔄 Chargement de l'état de réservation
     let chargementTerminé = false;
-    
-    db.ref("reservation").on("value", snapshot => {
+   
+    db.ref("reservation-bibliotheque").on("value", snapshot => {
       const data = snapshot.val();
       chargementTerminé = true;
       
@@ -69,7 +71,7 @@ setTimeout(() => {
   if (!chargementTerminé) {
     document.getElementById("status").innerText = "Erreur de chargement";
   }
-}, 5000);
+}, 5000);   
 
     function reserver() {
       const name = document.getElementById("nameInput").value.trim();
