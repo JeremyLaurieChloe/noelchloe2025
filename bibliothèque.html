@@ -89,7 +89,7 @@ window.reserver = function () {
         alert("Réservation confirmée !");
     });
 };
-
+    
     function resetReservation() {
       const pass = prompt("Mot de passe admin :");
       if (pass !== "noelchloe2025") {
@@ -100,6 +100,7 @@ window.reserver = function () {
       db.ref("reservation").set({});
       alert("Réservation réinitialisée !");
     }
+    });
   </script>
 </head>
 <body>
