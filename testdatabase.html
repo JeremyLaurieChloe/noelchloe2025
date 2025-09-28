@@ -17,6 +17,7 @@
 <script scr="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
+    window.addEventListener("load", () => {
     // Configuration Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyAdLzI0bNtDKQtANLm1Yj8fvksdw9TUGfI",
@@ -34,27 +35,32 @@
     const db = firebase.database();
 
     
-  // Écriture
-  function writeTestData() {
-    db.ref("test").set({
-      message: "Bonjour depuis Firebase !"
-    }).then(() => {
-      document.getElementById("output").innerText = "Donnée écrite avec succès.";
-    }).catch((error) => {
-      document.getElementById("output").innerText = "Erreur : " + error;
-    });
-  }
 
-
-    // Lecture
-    function readTestData() {
-      db.ref("test/message").once("value").then((snapshot) => {
-        const data = snapshot.val();
-        document.getElementById("output").innerText = "Donnée lue : " + data;
+// Écriture
+    window.writeTestData = function () {
+      db.ref("test").set({
+        message: "Bonjour depuis Firebase !"
+      }).then(() => {
+        document.getElementById("output").innerText = "Donnée écrite avec succès.";
       }).catch((error) => {
         document.getElementById("output").innerText = "Erreur : " + error;
       });
-    }
-  </script>
+    };
+
+    // Lecture
+    window.readTestData = function () {
+      db.ref("test").get().then((snapshot) => {
+        if (snapshot.exists()) {
+          document.getElementById("output").innerText = snapshot.val().message;
+        } else {
+          document.getElementById("output").innerText = "Aucune donnée trouvée.";
+        }
+      }).catch((error) => {
+        document.getElementById("output").innerText = "Erreur : " + error;
+      });
+    };
+  });
+</script>
+
 </body>
 </html>
