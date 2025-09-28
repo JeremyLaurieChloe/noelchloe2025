@@ -42,22 +42,18 @@
         measurementId: "G-8V58F7EQGN",
         databaseURL: "https://noel2025chloe-default-rtdb.europe-west1.firebasedatabase.app"
       };
-    
 
       // Initialisation Firebase
       firebase.initializeApp(firebaseConfig);
-      const db = firebase.database();
-    });
-
-      
-
+      const db = firebase.database();      
+     });
     // 🔄 Chargement de l'état de réservation
     let chargementTerminé = false;
    
-    db.ref("reservation-bibliotheque").on("value", snapshot => {
+    db.ref("reservation_bibliotheque").on("value", snapshot => {
       const data = snapshot.val();
       chargementTerminé = true;
-      
+   
       if (data && data.nom) {
         document.getElementById("status").innerText = "Déjà réservé par " + data.nom;
         document.getElementById("nameInput").style.display = "none";
