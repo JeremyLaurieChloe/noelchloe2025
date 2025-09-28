@@ -1,1 +1,76 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Réservation sac de randonnée</title>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .reservation { border: 1px solid #ccc; padding: 20px; width: 300px; margin-bottom: 20px; }
+    .admin { margin-top: 40px; }
+    #output { margin-top: 10px; font-weight: bold; color: green; }
+    #adminOutput { margin-top: 10px; font-weight: bold; color: red; }
+  </style>
+</head>
+<body>
+  <h2>Réservation</h2>
+  <div class="reservation" id="slot1">
+    <p id="status1">Sac de randonnée disponible</p>
+    <input type="text" id="name1" placeholder="Votre nom">
+    <button onclick="reserver('slot1')">Je réserve</button>
+    <div id="output"></div>
+  </div>
+
+  <div class="admin ">
+    <h3>Interface admin</h3>
+    <input type="password" id="adminPass" placeholder="Mot de passe admin">
+    <button onclick="resetReservation()">Réinitialiser</button>
+    <div id="adminOutput"></div>
+  </div>
+
+  <script>
+    emailjs.init("service_h4uudzr"); // Remplacez par votre User ID EmailJS
+
+    function reserver(slotId) {
+      const name = document.getElementById("name1").value;
+      if (!name) {
+        alert("Veuillez entrer votre nom");
+        return;
+      }
+
+      // Envoi de l'email via EmailJS
+      emailjs.send("service_h4uudzr", "template_ob420kk", {
+        to_name: "jejeom8166@gmail.com",
+        from_name: name,
+        slot: slotId
+      }).then(function(response) {
+        document.getElementById("output").innerText = "Réservation confirmée. Un email a été envoyé.";
+      }, function(error) {
+        document.getElementById("output").innerText = "Erreur lors de l'envoi de l'email.";
+      });
+
+      // Mise à jour visuelle
+      document.getElementById("status1").innerText = "Réservé par " + name;
+      document.getElementById("name1").style.display = "none";
+      document.querySelector(`#${slotId} button`).style.display = "none";
+    }
+
+    function resetReservation() {
+      const pass = document.getElementById("adminPass").value;
+      if (pass !== "noelchloe2025") {
+        document.getElementById("adminOutput").innerText = "Mot de passe incorrect.";
+        return;
+      }
+
+      // Réinitialisation de la réservation
+      document.getElementById("status1").innerText = "Disponible";
+      document.getElementById("name1").value = "";
+      document.getElementById("name1").style.display = "inline";
+      document.querySelector(`#slot1 button`).style.display = "inline";
+      document.getElementById("output").innerText = "";
+      document.getElementById("adminOutput").innerText = "Réservation réinitialisée.";
+    }
+  </script>
+</body>
+</html>
