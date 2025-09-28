@@ -1,9 +1,22 @@
+
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.jsps://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js</script>
+  <meta charset="UTF-8">
+  <title>Test Firebase</title>
 </head>
 <body>
-<script>
-  // Configuration Firebase
+  <h1>Test Firebase Database</h1>
+  <button onclick="writeTestData()">Écrire dans la base</button>
+  <button onclick="readTestData()">Lire depuis la base</button>
+  <p id="output"></p>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22pp-compat.js</script>
+  https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js</script>
+
+  <script>
+    // Configuration Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyAdLzI0bNtDKQtANLm1Yj8fvksdw9TUGfI",
     authDomain: "noel2025chloe.firebaseapp.com",
@@ -15,13 +28,30 @@
     databaseURL: "https://noel2025chloe-default-rtdb.europe-west1.firebasedatabase.app"
   };
 
-  // Initialisation Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+    // Initialisation
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-  // Test d’écriture dans la base
-  db.ref("test").set({ message: "Hello my friend" });
-</script>
+    // Écriture
+    function writeTestData() {
+      db.ref("test").set({
+        message: "Bonjour depuis Firebase !"
+      }).then(() => {
+        document.getElementById("output").innerText = "Donnée écrite avec succès.";
+      }).catch((error) => {
+        document.getElementById("output").innerText = "Erreur : " + error;
+      });
+    }
 
-//Hello world
+    // Lecture
+    function readTestData() {
+      db.ref("test/message").once("value").then((snapshot) => {
+        const data = snapshot.val();
+        document.getElementById("output").innerText = "Donnée lue : " + data;
+      }).catch((error) => {
+        document.getElementById("output").innerText = "Erreur : " + error;
+      });
+    }
+  </script>
 </body>
+</html>
