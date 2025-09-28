@@ -33,16 +33,18 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Écriture
-    function writeTestData() {
-      db.ref("test").set({
-        message: "Bonjour depuis Firebase !"
-      }).then(() => {
-        document.getElementById("output").innerText = "Donnée écrite avec succès.";
-      }).catch((error) => {
-        document.getElementById("output").innerText = "Erreur : " + error;
-      });
-    }
+    
+  // Écriture
+  function writeTestData() {
+    db.ref("test").set({
+      message: "Bonjour depuis Firebase !"
+    }).then(() => {
+      document.getElementById("output").innerText = "Donnée écrite avec succès.";
+    }).catch((error) => {
+      document.getElementById("output").innerText = "Erreur : " + error;
+    });
+  }
+
 
     // Lecture
     function readTestData() {
