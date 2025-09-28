@@ -1,1 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Réservation bibliothèque</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .reservation-box { border: 1px solid #ccc; padding: 20px; width: 300px; }
+    .reserved { color: red; font-weight: bold; }
+    .image-container img { max-width: 100%; height: auto; margin-top: 10px; }
+    .admin-section { margin-top: 30px; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      emailjs.init("service_h4uudzr"); // Remplacez par votre User ID EmailJS
+    });
 
+    let isReserved = false;
+
+    function reserver() {
+      if (isReserved) return;
+
+      const name = document.getElementById("nameInput").value.trim();
+      if (!name) {
+        alert("Veuillez entrer votre nom.");
+        return;
+      }
+
+      // Envoi de l'email via EmailJS
+      emailjs.send("service_h4uudzr", "template_ob420kk", {
+        to_name: "jejeom8166@gmail.com",
+        from_name: "jejeom8166@gmail.com",
+        slot: "Réservation Sac de randonnée"
+      });
+
+      // Mise à jour de l'interface
+      document.getElementById("status").innerText = "Déjà réservé par " + name;
+      document.getElementById("nameInput").style.display = "none";
+      document.getElementById("reserveButton").style.display = "none";
+      isReserved = true;
+    }
+
+    function resetReservation() {
+      const pass = prompt("Mot de passe admin :");
+      if (pass !== "noelchloe2025") {
+        alert("Mot de passe incorrect");
+        return;
+      }
+
+      document.getElementById("status").innerText = "Disponible";
+      document.getElementById("nameInput").style.display = "inline";
+      document.getElementById("nameInput").value = "";
+      document.getElementById("reserveButton").style.display = "inline";
+      isReserved = false;
+    }
+  </script>
+</head>
+<body>
+  <h2>Réservation</h2>
+  <div class="reservation-box">
+    <p id="status">Disponible</p>
+    <input type="text" id="nameInput" placeholder="Votre nom">
+    <button id="reserveButton" onclick="reserver()">Je réserve</button>
+    <div class="image-container">
+      <img src="https://www.cdiscount.com/pdt2/2/4/9/1/700x700/aaaql85249/rw/belfoyer-7-niveaux.jpg" alt="Image de réservation">
+    </div>
+  </div>
+
+  <div class="admin-section">
+    <button onclick="resetReservation()">🔐 Réinitialiser (admin)</button>
+  </div>
+</body>
+</html>
