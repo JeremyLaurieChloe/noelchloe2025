@@ -1,76 +1,76 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Réservation sac de randonnée</title>
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
-    .reservation { border: 1px solid #ccc; padding: 20px; width: 300px; margin-bottom: 20px; }
-    .admin { margin-top: 40px; }
-    #output { margin-top: 10px; font-weight: bold; color: green; }
-    #adminOutput { margin-top: 10px; font-weight: bold; color: red; }
+    .reservation-box { border: 1px solid #ccc; padding: 20px; width: 300px; }
+    .reserved { color: red; font-weight: bold; }
+    .image-container img { max-width: 100%; height: auto; margin-top: 10px; }
+    .admin-section { margin-top: 30px; }
   </style>
-</head>
-<body>
-  <h2>Réservation</h2>
-  <div class="reservation" id="slot1">
-    <p id="status1">Sac de randonnée disponible</p>
-    <input type="text" id="name1" placeholder="Votre nom">
-    <button onclick="reserver('slot1')">Je réserve</button>
-    <div id="output"></div>
-  </div>
-
-  <div class="admin ">
-    <h3>Interface admin</h3>
-    <input type="password" id="adminPass" placeholder="Mot de passe admin">
-    <button onclick="resetReservation()">Réinitialiser</button>
-    <div id="adminOutput"></div>
-  </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    emailjs.init("service_h4uudzr"); // Remplacez par votre User ID EmailJS
+    document.addEventListener("DOMContentLoaded", function() {
+      emailjs.init("service_h4uudzr"); // Remplacez par votre User ID EmailJS
+    });
 
-    function reserver(slotId) {
-      const name = document.getElementById("name1").value;
+    let isReserved = false;
+
+    function reserver() {
+      if (isReserved) return;
+
+      const name = document.getElementById("nameInput").value.trim();
       if (!name) {
-        alert("Veuillez entrer votre nom");
+        alert("Veuillez entrer votre nom.");
         return;
       }
 
       // Envoi de l'email via EmailJS
       emailjs.send("service_h4uudzr", "template_ob420kk", {
         to_name: "jejeom8166@gmail.com",
-        from_name: name,
-        slot: slotId
-      }).then(function(response) {
-        document.getElementById("output").innerText = "Réservation confirmée. Un email a été envoyé.";
-      }, function(error) {
-        document.getElementById("output").innerText = "Erreur lors de l'envoi de l'email.";
+        from_name: "jejeom8166@gmail.com",
+        slot: "Réservation Sac de randonnée"
       });
 
-      // Mise à jour visuelle
-      document.getElementById("status1").innerText = "Réservé par " + name;
-      document.getElementById("name1").style.display = "none";
-      document.querySelector(`#${slotId} button`).style.display = "none";
+      // Mise à jour de l'interface
+      document.getElementById("status").innerText = "Déjà réservé par " + name;
+      document.getElementById("nameInput").style.display = "none";
+      document.getElementById("reserveButton").style.display = "none";
+      isReserved = true;
     }
 
     function resetReservation() {
-      const pass = document.getElementById("adminPass").value;
+      const pass = prompt("Mot de passe admin :");
       if (pass !== "noelchloe2025") {
-        document.getElementById("adminOutput").innerText = "Mot de passe incorrect.";
+        alert("Mot de passe incorrect");
         return;
       }
 
-      // Réinitialisation de la réservation
-      document.getElementById("status1").innerText = "Disponible";
-      document.getElementById("name1").value = "";
-      document.getElementById("name1").style.display = "inline";
-      document.querySelector(`#slot1 button`).style.display = "inline";
-      document.getElementById("output").innerText = "";
-      document.getElementById("adminOutput").innerText = "Réservation réinitialisée.";
+      document.getElementById("status").innerText = "Disponible";
+      document.getElementById("nameInput").style.display = "inline";
+      document.getElementById("nameInput").value = "";
+      document.getElementById("reserveButton").style.display = "inline";
+      isReserved = false;
     }
   </script>
+</head>
+<body>
+  <h2>Réservation</h2>
+  <div class="reservation-box">
+    <p id="status">Disponible</p>
+    <input type="text" id="nameInput" placeholder="Votre nom">
+    <button id="reserveButton" onclick="reserver()">Je réserve</button>
+    <div class="image-container">
+      <img src="https://www.aubert.com/medias/sys_aubert/root/hcd/hb7/11100154134558/550Wx550H-01134705-1.jpg" alt="Image de réservation">
+    </div>
+  </div>
+
+  <div class="admin-section">
+    <button onclick="resetReservation()">🔐 Réinitialiser (admin)</button>
+  </div>
 </body>
 </html>
+
+
