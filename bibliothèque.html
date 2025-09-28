@@ -62,7 +62,7 @@
         document.getElementById("reserveButton").style.display = "inline";
       }
     });
-    });
+    
 // Sécurité : si Firebase ne répond pas dans 5 secondes
 setTimeout(() => {
   if (!chargementTerminé) {
@@ -79,7 +79,7 @@ setTimeout(() => {
 
       // Enregistrement dans Firebase
       db.ref("reservation").set({ nom: name });
-      alert("Réservation enregistrée !");
+      
 
       // Envoi de l'email via EmailJS
       emailjs.send("service_h4uudzr", "template_ob420kk", {
@@ -87,7 +87,7 @@ setTimeout(() => {
         from_name: name,
         slot: "la bibliothèque"
       });
-
+    });
       alert("Réservation confirmée !");
     }
 
