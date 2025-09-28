@@ -18,7 +18,7 @@
 
   <script>
     window.addEventListener("load", () => {
-    // Configuration Firebase
+
   const firebaseConfig = {
     apiKey: "AIzaSyAdLzI0bNtDKQtANLm1Yj8fvksdw9TUGfI",
     authDomain: "noel2025chloe.firebaseapp.com",
@@ -30,11 +30,9 @@
     databaseURL: "https://noel2025chloe-default-rtdb.europe-west1.firebasedatabase.app"
   };
 
-    // Initialisation
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
   
-// Écriture
     window.writeTestData = function () {
       db.ref("test").set({
         message: "Bonjour depuis Firebase !"
@@ -44,8 +42,7 @@
         document.getElementById("output").innerText = "Erreur : " + error;
       });
     };
-
-    // Lecture
+      
     window.readTestData = function () {
       db.ref("test").get().then((snapshot) => {
         if (snapshot.exists()) {
@@ -59,6 +56,5 @@
     };
   });
 </script>
-
 </body>
 </html>
