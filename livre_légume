@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Réservation livre fruits</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .reservation-box { border: 1px solid #ccc; padding: 20px; width: 300px; }
+    .reserved { color: red; font-weight: bold; }
+    .image-container img { max-width: 100%; height: auto; margin-top: 10px; }
+    .admin-section { margin-top: 30px; }
+  </style>
+  
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>  
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  
+  <script>
+    // Initialisation EmailJS
+    document.addEventListener("DOMContentLoaded", function() {
+      emailjs.init("pNVio12zWh2fUKRe6");
+    });
+   </script>
+
+  <script>
+    // Attendre que la page soit complètement chargée
+    window.addEventListener("load", () => {
+      // Configuration Firebase
+      const firebaseConfig = {
+        apiKey: "AIzasyAdLzToNbtdXQtANLm1yj8fvksdw9TUGfI",
+        authDomain: "noel2025chloe.firebaseapp.com",
+        projectId: "noel2025chloe",
+        storageBucket: "noel2025chloe.appspot.com",
+        messagingSenderId: "1051859193015",
+        appId: "1:1051859193015:web:f042f1ccf1ef9d4c6c9132",
+        measurementId: "G-8V58F7EQGN",
+        databaseURL: "https://noel2025chloe-default-rtdb.europe-west1.firebasedatabase.app"
+      };
+
+      // Initialisation Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();      
+     
+    // 🔄 Chargement de l'état de réservation
+    let chargementTerminé = false;
+   
+    db.ref("reservation_livre_legume").on("value", snapshot => {
+      const data = snapshot.val();
+      chargementTerminé = true;
+   
+      if (data && data.nom) {
+        document.getElementById("status").innerText = "Déjà réservé par " + data.nom;
+        document.getElementById("nameInput").style.display = "none";
+        document.getElementById("reserveButton").style.display = "none";
+      } else {
+        document.getElementById("status").innerText = "Disponible";
+        document.getElementById("nameInput").style.display = "inline";
+        document.getElementById("reserveButton").style.display = "inline";
+      }
+    });
+    
+// Sécurité : si Firebase ne répond pas dans 5 secondes
+setTimeout(() => {
+  if (!chargementTerminé) {
+    document.getElementById("status").innerText = "Erreur de chargement";
+  }
+}, 5000);   
+
+    
+window.reserver = function () {
+    const name = document.getElementById("nameInput").value.trim();
+    if (!name) {
+        alert("Veuillez entrer votre nom.");
+        return;
+    }
+
+    db.ref("reservation_livre_legume").set({ nom: name });
+
+    emailjs.send("service_h4uudzr", "template_ob420kk", {
+        to_name: "Jérémy",
+        from_name: name,
+        slot: "le livre des fruits"
+    })
+    .then(() => {
+        alert("Réservation confirmée !");
+    });
+};
+    
+    function resetReservation() {
+      const pass = prompt("Mot de passe admin :");
+      if (pass !== "noelchloe2025") {
+        alert("Mot de passe incorrect");
+        return;
+      }
+
+      db.ref("reservation_livre_legume").set({});
+      alert("Réservation réinitialisée !");
+    }
+    });
+  </script>
+</head>
+<body>
+  <h2>Réservation</h2>
+  <div class="reservation-box">
+    <p id="status">Chargement.... </p>
+    <input type="text" id="nameInput" placeholder="Votre nom">
+    <button id="reserveButton" onclick="reserver()">Je réserve</button>
+    <div class="image-container">
+      <img src="https://mespetitslivrets.fr/wp-content/uploads/2023/07/Des-2-768x768.png" alt="Image de réservation">
+    </div>
+  </div>
+
+  <div class="admin-section">
+    <button onclick="resetReservation()">🔐 Réinitialiser (admin)</button>
+  </div>
+</body>
+</html>
