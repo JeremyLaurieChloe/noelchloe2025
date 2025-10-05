@@ -78,7 +78,7 @@ window.reserver = function () {
         return;
     }
 
-    db.ref("reservation_livre1").set({ nom: name });
+    db.ref("reservation_livre_fruit").set({ nom: name });
 
     emailjs.send("service_h4uudzr", "template_ob420kk", {
         to_name: "Jérémy",
@@ -110,7 +110,7 @@ window.reserver = function () {
     <input type="text" id="nameInput" placeholder="Votre nom">
     <button id="reserveButton" onclick="reserver()">Je réserve</button>
     <div class="image-container">
-      <img src="https://mespetitslivrets.fr/wp-content/uploads/2023/07/Des-2-768x768.png" alt="Image de réservation">
+      <img src="https://mespetitslivrets.fr/wp-content/uploads/2023/08/Des-8-768x768.png" alt="Image de réservation">
     </div>
   </div>
 
